@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net7.0-ios</TargetFramework>
+		<RootNamespace>Net_iOS</RootNamespace>
+		<OutputType>Exe</OutputType>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>true</ImplicitUsings>
+		<SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<CreatePackage>false</CreatePackage>
+		<DebugType>full</DebugType>
+		<WarningLevel>4</WarningLevel>
+		<CodesignProvision>Automatic</CodesignProvision>
+		<CodesignKey>iPhone Developer</CodesignKey>
+		<DeviceSpecificBuild>false</DeviceSpecificBuild>
+		<MtouchDebug>true</MtouchDebug>
+		<IOSDebuggerPort>10001</IOSDebuggerPort>
+		<OptimizePNGs>false</OptimizePNGs>
+		<PlatformTarget>anycpu</PlatformTarget>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<CreatePackage>false</CreatePackage>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Update="ViewController.designer.cs">
+			<DependentUpon>ViewController.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<PropertyGroup>
+		<WatchAppProjectName>$(AssemblyName)</WatchAppProjectName>
+		<WatchAppBuildPath>$(MSBuildProjectDirectory)/../Watch/DerivedData/$(WatchAppProjectName)/Build/Products/$(Configuration)-watchsimulator</WatchAppBuildPath>
+		<WatchAppBundle>$(WatchAppProjectName) Watch App.app</WatchAppBundle>
+		<WatchAppBundleFullPath>$(WatchAppBuildPath)/$(WatchAppBundle)</WatchAppBundleFullPath>
+	</PropertyGroup>
+	<PropertyGroup>
+     <CreateAppBundleDependsOn>$(CreateAppBundleDependsOn);_CopyWatchOS2AppsToBundle</CreateAppBundleDependsOn>
+	</PropertyGroup>
+	<ItemGroup>
+		<_ResolvedWatchAppReferences Include="$(WatchAppBundleFullPath)" />
+	</ItemGroup>
+	<PropertyGroup Condition=" '$(_ResolvedWatchAppReferences)' != '' ">
+		<CodesignExtraArgs>--deep</CodesignExtraArgs>
+	</PropertyGroup>
+	<Target Name="PrintWatchAppBundleStatus" BeforeTargets="Build">
+		<Message Text="WatchAppBundleFullPath: '$(WatchAppBundleFullPath)' exists" Condition=" Exists('$(WatchAppBundleFullPath)') " />
+		<Message Text="WatchAppBundleFullPath: '$(WatchAppBundleFullPath)' does NOT exist" Condition=" !Exists('$(WatchAppBundleFullPath)') " />
+	</Target>
+</Project>
